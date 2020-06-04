@@ -16,7 +16,7 @@
 	<meta charset="UTF-8">
 	<title>我的借閱</title>
 	<link rel="stylesheet" type="text/css" href="css/general.css">
-
+	<link rel="icon" type="image/gif/png" href="images/borrow.png">
 </head>
 <body>
 	<div id="table">
