@@ -1,0 +1,236 @@
+body{
+	font-family: Microsoft JhengHei,Comfortaa, cursive; 
+	background-color: #f2f2f2;
+}
+a{
+	text-decoration:none; 
+	color: black;
+
+}
+
+div.popular{
+	position: relative;
+	width:110px;
+	background-color: #FFFAF0;
+	float: left;
+	margin-left: 10px;
+	display: inline-block;
+	border-radius: 7px;
+	height: 70%;	
+	text-align: center;
+	border: 2px solid #DCDCDC;
+	padding-top: 2px;
+}
+
+img.popular{
+	width: 100px;
+	height: 100px;
+}
+#content{
+	margin: 10px ;
+}
+
+
+#title{
+	width: 42%;
+	float: left;
+	height: 100px;
+	margin-left: 10px;
+}
+
+h1{
+	width: 100%;
+}
+
+#right{
+	text-align:center;
+	width: 50%;
+	height: 30px;
+	float: left;
+}
+
+#login{
+	position: relative;
+	width:15%;
+	background-color: grey;
+	float: left;
+	display: inline-block;
+	border-radius: 7px;
+	height: 100%;
+}
+
+.topright {
+	position: relative;
+	width:20%;
+	background-color: grey;
+	float: left;
+	margin-left: 10px;
+	display: inline-block;
+	border-radius: 7px;
+	height: 100%;
+}
+
+
+
+.menu{
+	list-style:none;
+	position:absolute;
+	top:100px;
+	width:95%;
+	margin:0 auto 0px auto;
+	height:37px;
+	padding:0px 20px 0px 20px;
+    background:#4b3c37;
+    border-radius: 10px;
+	/* Rounded Corners */
+}
+
+.menu li {
+	display:block;
+	text-align:center;
+	position:relative;
+	padding: 4px 2px 4px 2px;
+	margin-right:5px;
+	margin-top:5px;
+	border:none;
+}
+
+.menu a{
+	color: white;
+	text-decoration: none;
+}
+
+.searchbox{
+	padding: 4px 2px 4px 2px;
+	display: flex;
+	align-items: right;
+	float: right;
+	position: relative;
+	width: 400px;
+
+}
+
+#searchin{
+	margin-top: 10px; 
+	float: left;
+	width: 100%;
+}
+
+#search{
+	width: 20%;
+	height: 28px;
+	font-size: 20px;
+	border: 0;
+	background-color:grey;
+	color: #fff;
+	margin-left: 10px; 
+	border-radius:7px;
+	cursor:pointer;
+}
+
+
+#adminsearch{
+	width:400px;
+	height:450px; 
+	font-size: 20px;
+	overflow:auto;
+}
+
+#inputarea{
+	height: 100%;
+	text-align: left;
+}
+
+#option{
+	height: 20%
+}
+#valueinput{
+	height: 20%;
+}
+
+button{
+	border: 2px solid #4b3c37;
+	background-color :black;
+	color : white;
+	width :20%;
+	height: 30px;
+  	text-align: center;
+  	text-decoration: none;
+ 	display: block;
+ 	font-size: 20px;
+ 	margin: 0px auto;
+ 	margin-top: 10px;
+ 	padding-bottom: 10px;
+ 	font-family: Microsoft JhengHei;
+}
+
+select{
+  background-color: #fff;
+  width: 100%;
+  flex:1;
+  color: black;
+  cursor: pointer;
+  border-style:none; 
+  font-size: 18px;
+  text-align: right;
+  line-height: 1.75px;
+  appearance:none;
+  padding: 0px 9px;
+}
+
+.drop{
+	float: left;
+	width: 8%;
+	overflow: hidden;
+	padding : 0px;
+
+}
+
+.field{
+	background-color: #fff;
+	float: right; 
+	width: 15%;
+	height: 100px;
+	position: relative;
+	border-radius: 20px;
+	border: 2px solid black;
+	margin-right: 100px;
+	margin-top: -140px;
+}
+
+
+
+.subscribe button {
+	width :50%;
+
+}
+
+.recommend{
+	margin-left: 30px;
+	width: 70%;float:left;
+	top:30px; position: relative; padding: 10px;
+}
+
+#favorite {
+	width:25%;
+}
+
+div.subscribe {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: 8%;
+  height: 50px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-top: 2px;
+  border-radius: 10px;
+}
+
+.subscribe button:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+
+
