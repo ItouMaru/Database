@@ -44,7 +44,7 @@
 		}
 	}
 
-	$sql.=" and (a.AID = b.AID) ";
+	$sql.=" and (a.AID = b.AID)) ";
 	// 排序
 	if (isset($_GET["orders"])) {
 		$sql .= " ORDER BY ";
@@ -61,7 +61,7 @@
 		WHERE fav.BID = b.BID AND A.AID = B.AID
 		AND fav.MID = '$account'";
 	}
-
+	echo $sql;
 	// 執行query
 	require_once("readdb_php.php");
 	$link = readDb();

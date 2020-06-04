@@ -22,16 +22,20 @@
 	// 借閱
 	if (isset($_POST["borrow"])) {
 		if($account != ""){
-			$sql="UPDATE borrow_t SET Renew_t = (SELECT Renew_t FROM borrow_t where BID = '$bid' AND MID = '$account' ORDER BY Due_D DESC LIMIT 1) + 1, status = '未歸還',Due_D = '$dueday' WHERE BID = '$bid' AND MID = '$account' AND Borrow_D = (SELECT Borrow_D FROM borrow_t ORDER BY Borrow_D DESC LIMIT 1) AND (SELECT Due_D FROM borrow_t where BID = '$bid' AND MID = '$account' ORDER by Due_D DESC LIMIT 1) > '$date';
+			$sql="UPDATE borrow_t SET Renew_t = (SELECT Renew_t FROM borrow_t where (select Mbq from member_t where MID = '$account') > 0 AND BID = '$bid' AND MID = '$account' ORDER BY Due_D DESC LIMIT 1) + 1, status = '未歸還',Due_D = '$dueday' WHERE BID = '$bid' AND MID = '$account' AND Borrow_D = (SELECT Borrow_D FROM borrow_t ORDER BY Borrow_D DESC LIMIT 1) AND (SELECT Due_D FROM borrow_t where BID = '$bid' AND MID = '$account' ORDER by Due_D DESC LIMIT 1) > '$date';
 				insert into borrow_t SELECT '$bid','$account','$date','$dueday','0','NULL','未歸還' 
-					WHERE (select Mbq from member_t where MID = '$account') > 0 
-					AND NOT EXISTS (SELECT Due_D FROM borrow_t where BID = '$bid' AND MID = '$account' ORDER by Due_D DESC LIMIT 1) > '$date';";
+					WHERE (select Mbq from member_t where MID = '$account') > 0 AND NOT EXISTS (SELECT Due_D FROM borrow_t where BID = '$bid' AND MID = '$account' ORDER by Due_D DESC LIMIT 1) > '$date';";
+	
 			if($result = @mysqli_multi_query($link,$sql)){
-				echo "<script language='javascript'>alert('借閱成功!')</script>";
-				$sql="update member_t set mbq = IF((SELECT Renew_t FROM borrow_t 
-				where BID = '$bid' AND MID = '$account') > 0,(select Mbq from member_t where MID = '$account') -1,
+				
+				$sqlk="update member_t set mbq = IF((SELECT Renew_t FROM borrow_t 
+				where BID = '$bid' AND MID = '$account') = 0,(select Mbq from member_t where MID = '$account') -1,
 				(select Mbq from member_t where MID = '$account')) WHERE MID = '$account'";
-				@mysqli_query($link,$sql);
+				$up = @mysqli_query($link,$sqlk);
+				$test = @mysqli_fetch_array($up);
+				if(!$test){
+					echo "<script language='javascript'>alert('借閱成功!')</script>";
+				}
 			}else{
 				echo "<script language='javascript'>alert('您的借閱額度不足!')</script>";
 			}
