@@ -16,7 +16,7 @@ $link = readDb();
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 	<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-
+	<link rel="icon" type="image/gif/png" href="images/library.png">
 </head>
 <body>
 	<div id="content">
@@ -118,7 +118,7 @@ $link = readDb();
 		$sql="SELECT CID FROM favcategory_t WHERE MID = '$account'";
 		$result = @mysqli_query($link,$sql);
 		while ($rs = @mysqli_fetch_array($result)) {
-			echo "categorys=".$rs[0]."&";
+			echo "categorys[]=".$rs[0]."&";
 		}
 		echo "'>興趣分類</button></div>";
 	} ?>

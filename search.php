@@ -2,7 +2,7 @@
 	session_start();
 	$account = $_SESSION["login"];
 	// 一般搜尋
-	$sqlo = "SELECT DISTINCT b.BID,BName, Aname from book_t as b, author_t as a ,(SELECT AVG(rating) as rating from borrow_t GROUP BY BID) as rat ";    
+	$sqlo = "SELECT DISTINCT b.BID,BName, Aname from book_t as b, author_t as a  ";    
 	// 參數s'
 	if(isset($_GET["categorys"])){
 		foreach ((array)$_GET["categorys"] as $k => $ckey) {
@@ -20,29 +20,31 @@
 	}
 	$sqlc = substr($sqlc,0,-1).") ";
 	// 預設keywords的sql
-	$sqlk ="BName LIKE '%$key%' OR (Aname LIKE '%$key%' and a.AID = b.AID) OR b.bid = '$key' ";
+	$sqlk ="(BName LIKE '%$key%' AND b.AID = a.AID) OR 
+	(Aname LIKE '%$key%' AND a.AID = b.AID) OR (b.bid = '$key') ";
 	// 預設publishdate的sql
-	$sqlp = "Publishdate BETWEEN '$publishdate[0]' AND '$publishdate[1]' ";
+	$sqlp = "(Publishdate BETWEEN '$publishdate[0]' AND '$publishdate[1]') ";
 	if(isset($_GET["categorys"])){		
-		$sql = $sqlo."WHERE ".$sqlc;
+		$sql = $sqlo."WHERE (".$sqlc;
 		if(isset($_GET["keywords"])){
-			$sql .= "AND ".$sqlk;
+			$sql .= "AND ".$sqlk.")";
 			if($publishdate[0] != ""){
-				$sql .="AND ".$sqlp;
+				$sql .=" AND ".$sqlp;
 			}
 		}
 	}else if(isset($_GET["keywords"])){
-		$sql = $sqlo."WHERE ".$sqlk;
+		$sql = $sqlo."WHERE (".$sqlk.")";
 		if($publishdate[0] != ""){
-			$sql .="AND ".$sqlp;
+			$sql .=" AND ".$sqlp;
 		}
 	}else{
-		$sql = $sqlo."WHERE ".$sqlp;
+		$sql = $sqlo."WHERE (".$sqlp;
 		if(isset($_GET["categorys"])){
-			$sql .= "AND ".$sqlc;
+			$sql .= "AND ".$sqlc.")";
 		}
 	}
 
+	$sql.=" and (a.AID = b.AID) ";
 	// 排序
 	if (isset($_GET["orders"])) {
 		$sql .= " ORDER BY ";
@@ -59,12 +61,12 @@
 		WHERE fav.BID = b.BID AND A.AID = B.AID
 		AND fav.MID = '$account'";
 	}
+
 	// 執行query
 	require_once("readdb_php.php");
 	$link = readDb();
 	$result = @mysqli_query($link,$sql);
 	@$total_records=mysqli_num_rows($result);
-
  ?>
 <!DOCTYPE html>
 <html lang="utf-8">

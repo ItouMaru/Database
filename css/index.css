@@ -10,7 +10,7 @@ a{
 
 div.popular{
 	position: relative;
-	width:110px;
+	width:150px;
 	background-color: #FFFAF0;
 	float: left;
 	margin-left: 10px;
@@ -195,7 +195,6 @@ select{
 	border-radius: 20px;
 	border: 2px solid black;
 	margin-right: 100px;
-	margin-top: -140px;
 }
 
 

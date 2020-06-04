@@ -17,7 +17,7 @@
 					<tbody><tr><td class="thumbnail"><img src="images/book.png" style="width: 60%; height: 30%;"></td><td class="bookinfo"><ul>
 						<?php 
 						$bid = $_GET["bid"];
-						$sql = "SELECT BName,BID,Aname,Tname,PublishDate,Pname,Cname,Intro FROM `book_t` JOIN `publisher_t`,`category_t`,`translator_t`,`author_t` WHERE book_t.CID = category_t.CID AND publisher_t.PID = book_t.PID and translator_t.TID = book_t.TID and author_t.AID = book_t.AID 
+						$sql = "SELECT BName,BID,Aname,(CASE WHEN book_t.TID IS NULL THEN Tname = NULL ELSE Tname END) AS Tname ,PublishDate,Pname,Cname,Intro FROM `book_t` JOIN `publisher_t`,`category_t`,`translator_t`,`author_t` WHERE book_t.CID = category_t.CID AND publisher_t.PID = book_t.PID AND ( book_t.TID IS NULL OR book_t.TID = translator_t.TID) and author_t.AID = book_t.AID 
 							and BID = '$bid'";
 						$detail = @mysqli_query($link,$sql);
 						$detailrs= @mysqli_fetch_row($detail);
