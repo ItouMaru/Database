@@ -1,16 +1,29 @@
 <?php 
+	/* Report all errors except E_NOTICE */
+
+	error_reporting(E_ALL^E_NOTICE);
 	session_start();
 	$account = $_SESSION["login"];
 	// 一般搜尋
-	$sqlo = "SELECT DISTINCT b.BID,BName, Aname from book_t as b, author_t as a  ";    
+	$sqlo = "SELECT DISTINCT b.BID,BName, Aname, PName from book_t as b, author_t as a, publisher_t as p  ";    
 	// 參數s'
 	if(isset($_GET["categorys"])){
 		foreach ((array)$_GET["categorys"] as $k => $ckey) {
 			$categorys[] = $ckey;
 		}  
 	}
-	$key = $_GET["keywords"];
-	$publishdate = array($_GET["rangebegin"],$_GET["rangend"]);
+	if (isset($_GET["keywords"])) {
+		$key = $_GET["keywords"];
+	}	
+	if (isset($_GET["Aname"])) {
+		$key = $_GET["Aname"];
+	}	
+	if (isset($_GET["Pname"])) {
+		$key = $_GET["Pname"];
+	}
+	if(isset($_GET["rangebegin"]) AND isset($_GET["rangend"])){
+		$publishdate = array($_GET["rangebegin"],$_GET["rangend"]);
+	}
 	// 預設category的sql
 	$sqlc = " CID IN ( ";
 	if(isset($categorys)){
@@ -20,31 +33,31 @@
 	}
 	$sqlc = substr($sqlc,0,-1).") ";
 	// 預設keywords的sql
-	$sqlk ="(BName LIKE '%$key%' AND b.AID = a.AID) OR 
-	(Aname LIKE '%$key%' AND a.AID = b.AID) OR (b.bid = '$key') ";
+	$sqlk ="(BName LIKE '%$key%' AND b.AID = a.AID AND b.PID = p.PID) OR 
+	((Aname LIKE '%$key%' OR Pname LIKE '%$key%') AND a.AID = b.AID AND b.PID = p.PID) OR (b.bid = '$key') ";
 	// 預設publishdate的sql
 	$sqlp = "(Publishdate BETWEEN '$publishdate[0]' AND '$publishdate[1]') ";
 	if(isset($_GET["categorys"])){		
 		$sql = $sqlo."WHERE (".$sqlc;
 		if(isset($_GET["keywords"])){
-			$sql .= "AND ".$sqlk.")";
+			$sql .= "AND ".$sqlk;
 			if($publishdate[0] != ""){
 				$sql .=" AND ".$sqlp;
 			}
 		}
-	}else if(isset($_GET["keywords"])){
-		$sql = $sqlo."WHERE (".$sqlk.")";
+	}else if(isset($key)){
+		$sql = $sqlo."WHERE (".$sqlk;
 		if($publishdate[0] != ""){
 			$sql .=" AND ".$sqlp;
 		}
 	}else{
 		$sql = $sqlo."WHERE (".$sqlp;
 		if(isset($_GET["categorys"])){
-			$sql .= "AND ".$sqlc.")";
+			$sql .= "AND ".$sqlc;
 		}
 	}
 
-	$sql.=" and (a.AID = b.AID)) ";
+	$sql.=") AND (a.AID = b.AID AND b.PID = p.PID) ";
 	// 排序
 	if (isset($_GET["orders"])) {
 		$sql .= " ORDER BY ";
@@ -61,7 +74,7 @@
 		WHERE fav.BID = b.BID AND A.AID = B.AID
 		AND fav.MID = '$account'";
 	}
-	echo $sql;
+	// echo $sql;
 	// 執行query
 	require_once("readdb_php.php");
 	$link = readDb();
@@ -84,11 +97,11 @@
 	<div id = "table">
 	搜尋結果: <?php echo $total_records." 筆" ?>
 	<table >
-		<thead><tr><td>書籍名稱</td><td>作者</td></tr></thead>
+		<thead><tr><td>書籍名稱</td><td>作者</td><td>出版社</td></tr></thead>
 	<!-- 輸出搜尋結果 -->
 	<?php 
 		while ($rs = @mysqli_fetch_row($result)){
-			echo "<tr><td class = 'left'><a class = 'detailpage' data-fancybox data-type= 'iframe' href = 'detailpage.php?bid={$rs[0]}'>".$rs[1]."</a></td><td class='right'>".$rs[2]."</td></tr>";
+			echo "<tr><td class = 'left'><a class = 'detailpage' data-fancybox data-type= 'iframe' href = 'detailpage.php?bid={$rs[0]}'>".$rs[1]."</a></td><td class='right'><a class='detailpage' href='search.php?Aname={$rs[2]}'>".$rs[2]."</a></td><td class='right'><a class='detailpage' href='search.php?Pname={$rs[3]}'>".$rs[3]."</a></td></tr>";
 
 		}
 	 ?>

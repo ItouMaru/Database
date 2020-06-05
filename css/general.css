@@ -25,11 +25,11 @@ table{
       background: #eee;
     }
    td.left{
-   	width : 60%;
+   	width : 50%;
     padding:0px 0px;
    }
    td.right{
-   	width: 40%;
+   	width: 25%;
    	padding-left: 10px;
    	padding-top: 0px;
    }

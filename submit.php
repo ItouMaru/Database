@@ -2,12 +2,11 @@
 
 <script type="text/javascript" src="jquery.fancybox.js?v=2.1.2"></script>
 <link rel="stylesheet" type="text/css" href="jquery.fancybox.css?v=2.1.2" media="screen" />
-<script language='javascript'>
-	function open(){
-		document.getElementById('oprating').onclick();
-	}
-			</script>
-<?php 
+
+<?php
+	/* Report all errors except E_NOTICE */
+
+	error_reporting(E_ALL^E_NOTICE); 
 	setcookie("fav",1,time());
 	session_start();
 	require_once("readdb_php.php");
